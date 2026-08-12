@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<div style="padding: 2rem; max-width: 800px; margin: 0 auto;">
+    <h2>{{ course.title }}</h2>
+    <p>{{ course.description }}</p>
+
+    {% for module in course.modules.all %}
+    <div style="margin-top: 2rem; background: white; padding: 1.5rem; border-radius: 8px; border: 1px solid #e5e7eb;">
+        <h3 style="margin-top: 0;">Módulo {{ module.order }}: {{ module.title }}</h3>
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+            {% for lesson in module.lessons.all %}
+                <a href="{% url 'lesson_detail' lesson.id %}" class="btn btn-secondary" style="text-align: left;">
+                    Aula {{ lesson.order }}: {{ lesson.title }}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
