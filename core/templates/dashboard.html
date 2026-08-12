@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<div style="padding: 2rem;">
+    <h2>Cursos em Andamento</h2>
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 20px;">
+        {% for data in course_data %}
+        <div style="background: white; border: 1px solid #e5e7eb; padding: 1.5rem; border-radius: 8px; width: 300px;">
+            <h3 style="margin-top: 0;">{{ data.course.title }}</h3>
+            <p style="color: #6B7280;">Progresso: {{ data.progress }}% ({{ data.completed }} de {{ data.total }} aulas)</p>
+            <a href="{% url 'course_detail' data.course.id %}" class="btn btn-primary">Continuar Estudando</a>
+        </div>
+        {% empty %}
+        <p>Nenhum curso cadastrado ainda.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
