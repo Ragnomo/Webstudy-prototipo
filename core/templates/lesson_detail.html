@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="split-layout">
+    <!-- ESQUERDA: Conteúdo da Aula -->
+    <div class="left-pane">
+        <h2>{{ lesson.title }}</h2>
+        
+        {% if lesson.video_url %}
+        <div class="video-container">
+            <iframe src="{{ lesson.video_url }}" frameborder="0" allowfullscreen></iframe>
+        </div>
+        {% endif %}
+        
+        <div class="lesson-description">
+            <p>{{ lesson.description }}</p>
+        </div>
+
+        {% if lesson.has_quiz %}
+        <div class="quiz-section">
+            <h3>Quiz de Fixação</h3>
+            {% for q in lesson.questions.all %}
+            <div class="question-block" data-correct="{{ q.correct_option }}" style="margin-bottom: 15px; padding-left: 10px;">
+                <p><strong>{{ q.text }}</strong></p>
+                <label><input type="radio" name="q{{ q.id }}" value="A"> {{ q.option_a }}</label><br>
+                <label><input type="radio" name="q{{ q.id }}" value="B"> {{ q.option_b }}</label><br>
+                <label><input type="radio" name="q{{ q.id }}" value="C"> {{ q.option_c }}</label><br>
+            </div>
+            {% endfor %}
+            <button id="btn-check-quiz" class="btn btn-primary" style="margin-top: 10px;">Verificar Respostas</button>
+            <div id="quiz-feedback" style="margin-top: 10px; font-weight: bold;"></div>
+        </div>
+        {% endif %}
+
+        <div class="progress-actions" style="margin-top: 30px;">
+            <button id="btn-complete" class="btn btn-success" data-lesson-id="{{ lesson.id }}" {% if is_completed %}disabled{% endif %}>
+                {% if is_completed %}Aula Concluída ✓{% else %} Marcar como Concluída {% endif %}
+            </button>
+            <a href="{% url 'course_detail' lesson.module.course.id %}" class="btn btn-secondary">Voltar ao Curso</a>
+        </div>
+    </div>
+
+    <!-- DIREITA: Editor de Código -->
+    <div class="right-pane">
+        <div class="editor-header">
+            <h3>Terminal & Editor JavaScript</h3>
+            <div class="editor-actions">
+                <button id="btn-run" class="btn btn-primary">Executar</button>
+                <button id="btn-clear" class="btn btn-secondary">Limpar</button>
+            </div>
+        </div>
+        
+        {% if lesson.has_exercise %}
+        <div class="exercise-instruction">
+            <strong>Exercício:</strong> {{ lesson.exercise.instruction }}
+        </div>
+        <textarea id="code-editor">{{ lesson.exercise.initial_code }}</textarea>
+        {% else %}
+        <textarea id="code-editor">// Ambiente livre para testes em JavaScript&#13;console.log("Olá, WebStudy!");</textarea>
+        {% endif %}
+        
+        <div class="console-window">
+            <div class="console-header">Saída do Console:</div>
+            <div id="console-output"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
