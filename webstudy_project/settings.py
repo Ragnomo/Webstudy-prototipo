@@ -5,7 +5,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-test-key-for-prototype'
 DEBUG = True
 
-# Permite que o GitHub Codespaces exiba o site
+
 ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = ['https://*.github.dev', 'https://*.app.github.dev']
 
